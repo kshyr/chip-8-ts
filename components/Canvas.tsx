@@ -30,6 +30,10 @@ export default function Canvas() {
     if (romData.length && !chip8.current) {
       chip8.current = new CHIP8();
       chip8.current.load_rom(romData);
+
+      for (let i = 0; i < romData.length / 2; i++) {
+        chip8.current.tick();
+      }
     }
   }, [romData]);
 

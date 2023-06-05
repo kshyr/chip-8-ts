@@ -52,4 +52,32 @@ export class CHIP8 {
         }
         console.log("Loaded into RAM: ", this.RAM);
     }
+
+    tick(): void {
+        const op = this.fetch();
+        this.execute(op);
+    }
+
+    fetch(): number {
+        const higher_byte = this.RAM[this.PC];
+        const lower_byte = this.RAM[this.PC + 1];
+
+        const op = (higher_byte << 8) | lower_byte;
+        this.PC += 2;
+
+        return op;
+    }
+
+    execute(op: number): void {
+        switch (op) {
+            default:
+                console.warn(
+                    `Unimplemented opcode: ${op
+                        .toString(16)
+                        .padStart(4, "0")
+                        .toUpperCase()}`
+                );
+                break;
+        }
+    }
 }
