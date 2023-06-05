@@ -26,7 +26,7 @@ export const SCREEN_WIDTH = 64;
 export const SCREEN_HEIGHT = 32;
 
 export class CHIP8 {
-    private ram: Uint8Array;
+    private RAM: Uint16Array;
     private registers: Uint8Array;
     private stack: Uint16Array;
     private PC: number;
@@ -36,7 +36,7 @@ export class CHIP8 {
     private DT: number;
 
     constructor() {
-        this.ram = new Uint8Array(RAM_SIZE);
+        this.RAM = new Uint16Array(RAM_SIZE);
         this.registers = new Uint8Array(REGS_NUM);
         this.stack = new Uint16Array(STACK_SIZE);
         this.PC = START_ADDR;
@@ -44,5 +44,12 @@ export class CHIP8 {
         this.SP = -1;
         this.ST = 0;
         this.DT = 0;
+    }
+
+    load_rom(rom: number[]) {
+        for (let offset = 0; offset < rom.length; offset++) {
+            this.RAM[START_ADDR + offset] = rom[offset];
+        }
+        console.log("Loaded into RAM: ", this.RAM);
     }
 }
