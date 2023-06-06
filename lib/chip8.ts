@@ -226,6 +226,7 @@ export class CHIP8 {
                 const rng = crypto.getRandomValues(new Uint16Array(1))[0];
                 this.V[x] = rng & kk;
 
+            // DRW
             case 0xd000:
                 this.V[0xf] = 0;
 
@@ -242,6 +243,87 @@ export class CHIP8 {
                         }
                     }
                 }
+                break;
+
+            case 0xe000:
+                switch (kk) {
+                    // SKP Vx
+                    case 0x9e:
+                        break;
+
+                    // SKNP
+                    case 0xa1:
+                        break;
+
+                    default:
+                        console.warn(
+                            `Unimplemented opcode: ${op
+                                .toString(16)
+                                .padStart(4, "0")
+                                .toUpperCase()}`
+                        );
+                        break;
+                }
+                break;
+
+            case 0xf000:
+                switch (kk) {
+                    // LD Vx <- DT
+                    case 0x07:
+                        break;
+
+                    // LD Vx <- K
+                    case 0x0a:
+                        break;
+
+                    // LD DT <- Vx
+                    case 0x15:
+                        break;
+
+                    // LD ST <- Vx
+                    case 0x18:
+                        break;
+
+                    // ADD I + Vx
+                    case 0x1e:
+                        this.I += this.V[x];
+                        break;
+
+                    // LD font
+                    case 0x29:
+                        break;
+
+                    // BCD
+                    case 0x33:
+                        this.RAM[this.I] = Math.floor(this.V[x] / 100);
+                        this.RAM[this.I + 1] = Math.floor(this.V[x] / 10) % 10;
+                        this.RAM[this.I + 2] = this.V[x] % 10;
+                        break;
+
+                    // LD [I] <- Vx
+                    case 0x55:
+                        for (let idx = 0; idx < x; idx++) {
+                            this.RAM[this.I + idx] = this.V[idx];
+                        }
+                        break;
+
+                    // LD Vx <- [I]
+                    case 0x65:
+                        for (let idx = 0; idx < x; idx++) {
+                            this.V[idx] = this.RAM[this.I + idx];
+                        }
+                        break;
+
+                    default:
+                        console.warn(
+                            `Unimplemented opcode: ${op
+                                .toString(16)
+                                .padStart(4, "0")
+                                .toUpperCase()}`
+                        );
+                        break;
+                }
+                break;
 
             default:
                 console.warn(

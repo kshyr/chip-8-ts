@@ -37,20 +37,10 @@ export class Renderer {
 
         if (this.frame_buffer[y][x]) {
             this.ctx.fillStyle = FG_COLOR;
-            this.ctx.fillRect(
-                x * SCALE_MOD,
-                y * SCALE_MOD,
-                SCREEN_WIDTH * SCALE_MOD,
-                SCREEN_HEIGHT * SCALE_MOD
-            );
+            this.ctx.fillRect(x * SCALE_MOD, y * SCALE_MOD, SCALE_MOD, SCALE_MOD);
         } else {
             this.ctx.fillStyle = BG_COLOR;
-            this.ctx.fillRect(
-                x * SCALE_MOD,
-                y * SCALE_MOD,
-                SCREEN_WIDTH * SCALE_MOD,
-                SCREEN_HEIGHT * SCALE_MOD
-            );
+            this.ctx.fillRect(x * SCALE_MOD, y * SCALE_MOD, SCALE_MOD, SCALE_MOD);
         }
 
         return collision;
