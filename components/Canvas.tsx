@@ -1,8 +1,7 @@
 "use client";
-import { CHIP8, SCREEN_WIDTH, SCREEN_HEIGHT } from "@/lib/chip8";
+import { CHIP8 } from "@/lib/chip8";
+import { SCREEN_WIDTH, SCREEN_HEIGHT, SCALE_MOD } from "@/lib/renderer";
 import { useEffect, useRef, useState } from "react";
-
-const SCALE_MOD = 16;
 
 async function getRomData(romName: string) {
   const data = await fetch("api/rom?name=" + romName).then((res) => res.json());
@@ -15,20 +14,15 @@ export default function Canvas() {
   const chip8 = useRef<CHIP8 | null>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      ctx?.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-    getRomData("test.ch8").then((res) => {
+    getRomData("IBM-logo.ch8").then((res) => {
       const raw = Array.from(Object.values(res.raw)) as number[];
       setRomData(raw);
     });
   }, []);
 
   useEffect(() => {
-    if (romData.length && !chip8.current) {
-      chip8.current = new CHIP8();
+    if (romData.length && canvasRef.current && !chip8.current) {
+      chip8.current = new CHIP8(canvasRef.current);
       chip8.current.load_rom(romData);
 
       for (let i = 0; i < romData.length / 2; i++) {
