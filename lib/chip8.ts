@@ -47,7 +47,16 @@ export class CHIP8 {
         this.display = new Renderer(canvas);
     }
 
-    load_rom(rom: number[]) {
+    load(rom: number[]) {
+        const fontset = FONTSET.reduce(
+            (acc, curr) => acc.concat(Array.from(curr) as []),
+            []
+        );
+
+        for (let offset = 0; offset < fontset.length; offset++) {
+            this.RAM[offset] = fontset[offset];
+        }
+
         for (let offset = 0; offset < rom.length; offset++) {
             this.RAM[START_ADDR + offset] = rom[offset];
         }
@@ -225,6 +234,7 @@ export class CHIP8 {
             case 0xc000:
                 const rng = crypto.getRandomValues(new Uint16Array(1))[0];
                 this.V[x] = rng & kk;
+                break;
 
             // DRW
             case 0xd000:

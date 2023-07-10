@@ -14,10 +14,10 @@ export class Renderer {
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
         this.clear_screen();
-        this.frame_buffer = this.frame_buffer_init();
+        this.frame_buffer = this._frame_buffer_init();
     }
 
-    frame_buffer_init(): number[][] {
+    _frame_buffer_init(): number[][] {
         let frame_buffer: number[][] = [];
 
         for (let i = 0; i < SCREEN_HEIGHT; i++) {
@@ -47,6 +47,7 @@ export class Renderer {
     }
 
     clear_screen(): void {
+        this.frame_buffer = this._frame_buffer_init();
         this.ctx.fillStyle = BG_COLOR;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
